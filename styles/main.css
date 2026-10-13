@@ -52,3 +52,14 @@ button { cursor: pointer; }
   white-space: nowrap;
 }
 
+.skip-ink {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 99px;
+  backrground: var(--ink);
+  color: #fff;
+}
+
