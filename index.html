@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book & Notes Vault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Intrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <script type="module" src="scripts/main.js"></script>
+    </head>
+    <body>
+        <a class="skip-link" href="#main">Skip to content</a>
+
+        <header class="app-header">
+            <p class="brand">vault.</p>
+            <nav class="tabs"aria-label="Main">
+                <button class="tab" data-view="home"aria-current="page">Home</button>
+                <button class="tab" data-view="library">Library</button>
+                <button class="tab" data-view="add">Add</button>
+                <button class="tab" data-view="Settings">Settings</button>
+                <button class="tab" data-view="about">About</button>
+            </nav>
+        </header>
+
+        <main id="main" tabinex="-1">
+            
+            <!-- HOME / DASHBOARD --> 
+            <section class="view" id="view-home" aria-labelledby="home-title">
+                <p class="eyebrow" id="today-date">Today</p>
+                <h1 id="home-title" tabindex="-1">Good afternoon, Fiinsi</h1>
+
+                <div class="bento">
+                    <article class="title hero"
+                        <h2 class="eyebrow">Your shelf</h2>
+                        <p class="big-number"><span id="stat-pages">0</span> <small>pages</small></p>
+                        <p class="sentence">
+                            You've shelved <b id="stat-books">0 books</b> by <b id="stat-authors">0 authors</b>,
+                            mostly <b id="stat-tag">-</b>.
+                        </p>
+                    </article>
+
+                    <article class="widget-stack" aria-label="Quick widgets">
+                        <div class="calendar" aria-label="Last book added">
+                        <span class="calendar-month" id="widget-month">Sep</span>
+                        <span class="calendar-day" id="widget-day">25</span>
+                    </div>
+                    <div class="stamp" aria-label="Top tag">
+                        <div class="cover" id="widget-stamp"></div>
+                        <span class="stamp-label" id="widget-tag">Tag</span>
+                    </div>
+                    <div class="cd" aria-label="Latest book">
+                        <div class="cover" id="widget-cd"></div>
+                        <span class="cd-label" id="widget-latest">-</span>
+                    </div>
+                    </article>
+
+                    <article class="tile goal">
+                        <h2 class="eyebrow">Pages goal</h2>
+                        <form id=" goal-form" class="goal-row">
+                            <label for="goal-input">Goalin pages</label>
+                            <input id="goal-input" inputmode="numeric" aria-describedby="goal-error">
+                            <button class="glow-button" type="submit">Set goal</button>
+                        </form>
+                        <p class="error" id="goal-error"></p>
+                        <div class="progress" aria-hidden="true"><span id="goal-bar"></span></div>
+                    </article>
+
+                    <article class="tile note">
+                        <h2 class="eyebrow">Reading note</h2>
+                        <p class="sentence" id="cap-polite" role="status" aria-live="polite"></p>
+                        <p class="sentence over" id="cap-alert" aria-live="assertive"></p>
+                    </article>
+
+                    <article class="tile week">
+                        <h2>Last 7 days</h2>
+                        <div class="chart" id="week-chart" role="img" aria-label="Pagesadded each day this week"></div>
+                    </article>
+
+                    <button class="tile plus-tile" data-view="add" aria-label="Add a book">+</button>
+                </div>
+            </section>
+
+            <!-- LIBRARY / RECORDS --> 
+            <section clas="view" id="view-library" aria-labelledby="library-title" hidden>
+                <h1 id="library-title" tabindex="-1">Library</h1>
+
+                <div class="search-bar">
+                    <label for="search-input" class="sr-only">Search with a regular expression</label>
+                    <input id="search-input" placeholder="azra"|kingdom" autocomplete="off" spellcheck="false">
+                    <button id="case-toggle" class="chip" aria-pressed="true" aria-label="Ignore uppercase and lowercase">Aa</button>
+                </div>
+
+                <div class="toolbar">
+                    <div class="segmented" role="group" aria-label="Sort books">
+                        <button data-sort="dateAdded" aria-pressed="true">Date ↓</button>
+                        <button data-sort="title" aria-pressed="false">Title</button>
+                        <button data-sort="pages" aria-pressed="false">Pages</button>
+                    </div>
+                    <p class="status" id="search-status" role="status"></p>
+                </div>
+
+                <table class="books">
+                    <caption class="sr-only">Your books</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"><span class="sr-only">Cover</span></th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Pages</th>
+                            <th scope="col">Tag</th>
+                            <th scope="col">Added</th>
+                            <th scope="col"><span class="sr-only">Actions</span></th>
+                        </tr>
+                    </thead>
+                </table>
+            </section>
+
+
+
+            <!-- ADD FORM --> 
+             <section class="view" id="view-add" aria-labelledby="add-title" hidden>
+                <div class="sheet-rim">
+                    <form class="tile sheet" id="add-form" novalidate>
+                        <div class="sheet-bar">
+                            <button type="button" class="text-button" data-view="library">Cancel</button>
+                            <h1 id="add-title" tabindex="-1">New book</h1>
+                            <button type="submit" class="text-button strong">Add</button>
+                        </div>
+
+                        <div class="preview" aria-hidden="true">
+                            <p class="sentence"><b id="preview-author">Author</b> is adding to the vault:</p>
+                            <p class="sentence"><b id="preview-title">Title</b></p>
+                            <p class="preview-details" id="preview-details">0 pages</p> 
+                        </div>
+
+                         <div class="field-group">
+            <div class="field">
+              <label for="title">Title</label>
+              <input id="title" name="title" aria-describedby="title-error">
+            </div>
+            <p class="error" id="title-error"></p>
+            <div class="field">
+              <label for="author">Author</label>
+              <input id="author" name="author" aria-describedby="author-error">
+            </div>
+            <p class="error" id="author-error"></p>
+            <div class="field">
+              <label for="pages">Pages</label>
+              <input id="pages" name="pages" inputmode="decimal" aria-describedby="pages-error">
+            </div>
+            <p class="error" id="pages-error"></p>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="tag">Tag</label>
+              <input id="tag" name="tag" list="tag-list" aria-describedby="tag-error">
+            </div>
+            <p class="error" id="tag-error"></p>
+            <div class="field">
+                <label for="dataAdded">Added</label>
+                <input id="dateAdded" name="dateAdded" placeholder="YYYY-MM-DD" aria-decribedby="dateAdded-error">
+            </div>
+            <p class="error" id="dateAdded-error"></p>
+            </div>
+
+            <datalist id="tag-list">
+                <option value="Dark Romance"></option>
+                <option value="Romantasy"></option>
+                <option value="Fantasy"></option>
+                <option value="Gothic"></option>
+                <option value="Contemporary Romance"></option>
+            </datalist>
+
+            <p class="status" id="form-status" role="status"></p>
+        </form>
+    </div>
+</section>
+
+ <!-- SETTINGS --> 
+<section class="view" id="view-settings" aria-labelledby="settings-title" hidden>
+    <h1 id="settings-title" tabindex="-1">Settings</h1>
+
+    <div class="bento">
+        <article class="tile">
+            <h2>Reading units</h2>
+            <div class setting-row>
+                <label for="pages-per-hour">Pages per hour</label>
+                <input id="pages-per-hour" inputmode="numeric">
+            </div>
+            <div class="setting-row">
+                <label for="unit-select">Show total</label>
+                <select id="unit-select">
+                    <option value="pages">Pages</option>
+                    <option value="hours">Hours</option>
+                </select>
+            </div>
+            <div class="setting-row">
+                <span>Total</span>
+                <b id="converted-total">0 pages</b>
+            </div>
+        </article>
+
+        <article class="title">
+            <h2>Your data</h2>
+            <p class="sentence small">Sved on <b>this device</b>. Download a <b>backup</b> or import one.</p>
+            <div class="button-row">
+                <button class="soft-button" id="export-button">Export JSON</button>
+                <label class="soft-button" for="import-input">Import JSON</label>
+                <input type="file" id="import-input" accept=".json,application/json" class="sr-only">
+                <button class="soft-button" id="seed-button">Load sample books</button>
+            </div>
+            <p class="status" id="data-status" role="status"></p>
+         </article>
+    </div>
+</section>
+
+ <!-- ABOUT --> 
+<section class="view" id="view-about" aria-labelledby="about-title" hidden>
+    <div class="sheet-rim">
+        <article class="tile about">
+            <p class="avatar" aria-hidden="true">F</p>
+            <h1 id="about-title" tabindex="-1">Fiinsi Kabore</h1>
+            <p class="sentence">is keeping track of <b>every book</b> sher reads in one <b>quiet little vault</b>.</p>
+            <hr>
+            <p>Book &amp; Notes Vault · Frontend Web Development, ALU</p>
+            <p>GitHub: <a href=https://github.com/fiinsikabore">github.com/fiinsikabore</a></p>
+          <p>Email: <a href="mailto:YOUR-EMAIL">YOUR-EMAIL</a></p></p>
+        </article>
+    </div>
+</section>
+        
+</main>
+
+<footer class="app-footer">
+    <p>Made by Fiinsi</p>
+</footer>
+</body>
+</html>

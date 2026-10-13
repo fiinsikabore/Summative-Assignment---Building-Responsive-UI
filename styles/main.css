@@ -1,0 +1,54 @@
+/* =========================================
+   1. Colours and fonts (design tokens)
+   ========================================= */
+:root {
+  --bg: #ECECEE;          
+  --tile: #FFFFFF;       
+  --rim: #E0E0E4;        
+  --ink: #111113;         
+  --ink-soft: #6C6C72;    
+  --line: #E6E6EA;        
+  --pink: #E0457F;
+  --pink-soft: #F9C6DA;
+  --lime: #C8F07A;
+  --butter: #F6E96B;
+  --danger: #C62828;
+
+  --font: -apple-system, "SF Pro Text", Inter, system-ui, sans-serif;
+  --serif: "Instrument Serif", Georgia, serif;
+  --radius: 30px;
+  --shadow: 0 10px 30px -12px rgba(20, 20, 30, 0.15);
+}
+
+/* =========================================
+   2. Base
+   ========================================= */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button, input, select {font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
