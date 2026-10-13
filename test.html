@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Vault · Tests</title>
+  <style>
+    body { font-family: -apple-system, Inter, system-ui, sans-serif; background: #ECECEE; padding: 24px; }
+    li { margin: 4px 0; }
+    .pass { color: #1B7F3B; }
+    .fail { color: #C62828; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <h1>Validator and search tests</h1>
+  <p id="summary" role="status"></p>
+  <ul id="results"></ul>
+
+  <script type="module">
+    import { validateField, isValidBook } from './scripts/validators.js';
+    import { compileRegex, highlight, filterBooks, sortBooks } from './scripts/search.js';
+
+    let passed = 0;
+    let failed = 0;
+
+    function check(description, result) {
+      const li = document.createElement('li');
+      li.className = result ? 'pass' : 'fail';
+      li.textContent = (result ? '✓ ' : '✗ ') + description;
+      document.getElementById('results').append(li);
+      result ? passed++ : failed++;
+    }
+
+    // Title / author
+    check('accepts a normal title', validateField('title', 'Serpent & Dove') === '');
+    check('rejects a space at the start', validateField('title', ' Serpent') !== '');
+    check('rejects a space at the end', validateField('title', 'Serpent ') !== '');
+    check('rejects double spaces', validateField('title', 'The  Way of Kings') !== '');
+    check('ADVANCED: catches a repeated word', validateField('title', 'Kingdom of the Wicked Wicked') !== '');
+    check('ADVANCED: repeated word ignores case', validateField('title', 'The the Love Hypothesis') !== '');
+    check('ADVANCED: different words are fine', validateField('title', 'Kingdom of the Wicked') === '');
+
+    // Pages
+    check('accepts 528 pages', validateField('pages', '528') === '');
+    check('accepts 0', validateField('pages', '0') === '');
+    check('accepts 12.5', validateField('pages', '12.5') === '');
+    check('rejects a leading zero (0528)', validateField('pages', '0528') !== '');
+    check('rejects "52 8"', validateField('pages', '52 8') !== '');
+    check('rejects 3 decimals', validateField('pages', '12.345') !== '');
+
+    // Date
+    check('accepts 2024-02-29', validateField('dateAdded', '2024-02-29') === '');
+    check('rejects month 13', validateField('dateAdded', '2025-13-01') !== '');
+    check('rejects 29/02/2024', validateField('dateAdded', '29/02/2024') !== '');
+
+    // Tag
+    check('accepts "Dark Romance"', validateField('tag', 'Dark Romance') === '');
+    check('accepts "Non-Fiction"', validateField('tag', 'Non-Fiction') === '');
+    check('rejects "Fantasy!"', validateField('tag', 'Fantasy!') !== '');
+    check('rejects an empty tag', validateField('tag', '') !== '');
+
+    // Import shape
+    check('accepts a complete book', isValidBook({ id: 'b1', title: 'A', author: 'B', pages: 10, tag: 'Fantasy', dateAdded: '2025-01-01' }));
+    check('rejects a book with no id', !isValidBook({ title: 'A', author: 'B', pages: 10, tag: 'Fantasy', dateAdded: '2025-01-01' }));
+
+    // Search
+    check('broken pattern returns false', compileRegex('(', true) === false);
+    check('empty search returns null', compileRegex('', true) === null);
+    check('highlight wraps matches in <mark>', highlight('Kingdom of the Wicked', compileRegex('wicked', true)) === 'Kingdom of the <mark>Wicked</mark>');
+    check('highlight escapes HTML', highlight('<b>', null) === '&lt;b&gt;');
+
+   const sample = [ 
+    { title: 'B', authour: 'X', tag: 'Fantasy', pages: 300, dateAdded: '2025-01-02' },
+    { title: 'A', author: 'Azra Reed', tag: 'Dark Romance', pages: 100, dateAdded: '2025-01-03' }
+   ];
+   check('filter finds an author', filterBooks(sample, compileRegex('azra', true)).length === 1);
+   check( 'sort by pages ascending', sortBooks(sample, 'pages', 'asc')[0].pages === 100);
+   check('sort by title descending', sortBooks(sample, 'title', 'desc')[0].title === 'B');
+
+   document.getElementById('summary').textContent = `${passed} passed, ${failed} failed`;
+   </script>
+</body>
+</html>
