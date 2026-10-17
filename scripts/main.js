@@ -17,7 +17,7 @@ const view = {
 let settings = loadSettings();
 
 function refresh() {
-    const all =getBooks();
+    const all = getBooks();
     const regex = compileRegex(view.query, view.ignoreCase);
     const shown = sortBooks(filterBooks(all, regex || null), view.sortKey, view.sortDir);
 
@@ -231,7 +231,7 @@ document.getElementById('pages-per-hour').addEventListener('input', event => {
 document.getElementById('unit-select').addEventListener('change', event => {
     settings.unit = event.target.value;
     saveSettings(settings);
-    renderConvertedTotal(getSats(getBooks()).totalPages, settings);
+    renderConvertedTotal(getStats(getBooks()).totalPages, settings);
 });
 
 const dataStatus = document.getElementById('data-status');
