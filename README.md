@@ -3,7 +3,9 @@
 A calm, iOS-inspired reading tracker for keeping every book I read in one place. Built with vanilla HTML, CSS and JavaScript for the **Building Responsive UI** summative (Frontend Web Development, ALU).
 
 **Theme:** Book & Notes Vault
+
 **Live site (GitHub Pages):** https://github.com/fiinsikabore/Summative-Assignment---Building-Responsive-UI.git
+
 **Demo video (unlisted):** ADD-LINK-HERE
 
 ---
