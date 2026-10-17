@@ -21,7 +21,7 @@ function refresh() {
     const regex = compileRegex(view.query, view.ignoreCase);
     const shown = sortBooks(filterBooks(all, regex || null), view.sortKey, view.sortDir);
 
-    renderLibrary(shown, {...view, regex, total: all.lenght });
+    renderLibrary(shown, {...view, regex, total: all.length });
     renderSortButtons(view.sortKey, view.sortDir);
     renderDashboard(all, settings);
 } 
@@ -31,7 +31,7 @@ function showView(name) {
         section.hidden = section.id !== 'view-' + name;
     });
     document.querySelectorAll('.tab').forEach(tab => {
-        if (tab.CDATA_SECTION_NODE.view === name) tab.setAttribute('aria-current', 'page');
+        if (tab.dataset.view === name) tab.setAttribute('aria-current', 'page');
         else tab.removeAttribute('aria-current');
 
     });
@@ -40,7 +40,7 @@ function showView(name) {
 }
 
 document.addEventListener('click', event => {
-    const link = event.target.closest('[data-view}');
+    const link = event.target.closest('[data-view]');
     if (link) showView(link.dataset.view);
 });
 
@@ -80,10 +80,10 @@ function saveEdit(id) {
 
     for (const field of FIELDS) {
         const input= document.getElementById('edit-' + field);
-        const message = validateField(field; input.value);
+        const message = validateField(field, input.value);
         showError(input, message);
         if (message) valid = false;
-        change[field] = input.value;
+        changes[field] = input.value;
     }
 
     if (!valid) {
@@ -186,6 +186,8 @@ form.addEventListener('submit', event => {
   if (firstInvalid) {
     status.textContent = 'Fix the fields in red first.';
     firstInvalid.focus();
+    return;
+
   }
 
   const values = readForm();
@@ -222,7 +224,7 @@ document.getElementById('pages-per-hour').addEventListener('input', event => {
     if (value > 0) {
         settings.pagesPerHour = value;
         saveSettings(settings);
-        renderConvertedTotal(getStats(getBook()).totalPages, settings);
+        renderConvertedTotal(getStats(getBooks()).totalPages, settings);
     }
 });
 
@@ -259,8 +261,8 @@ document.getElementById('import-input').addEventListener('change', async event =
 
 document.getElementById('seed-button').addEventListener('click', async () => {
   try {
-    constresponse = await fetch('seed.json');
-    replaceAllBooks(await Response.json());
+    const response = await fetch('seed.json');
+    replaceAllBooks(await response.json());
     refresh();
     dataStatus.textContent = 'Sample books loaded.';
   } catch {
@@ -268,7 +270,7 @@ document.getElementById('seed-button').addEventListener('click', async () => {
   }
 });
 
-function greetings() {
+function greeting() {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning, Fiinsi';
     if (hour < 18) return 'Good afternoon, Fiinsi';

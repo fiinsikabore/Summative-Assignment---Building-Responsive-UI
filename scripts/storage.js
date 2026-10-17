@@ -1,10 +1,10 @@
 const BOOKS_KEY = 'vault:books';
-const SETTINGS_Key = 'vault:settings';
+const SETTINGS_KEY = 'vault:settings';
 const DEFAULT_SETTINGS = { goal: 6000, pagesPerHour: 40, unit: 'pages' };
 
 export function loadBooks() {
     try{
-        const data = JSON.parse(localeStorage.getItem(BOOKS-KEY));
+        const data = JSON.parse(localStorage.getItem(BOOKS-KEY));
         return Array.isArray(data) ? data : [];
     } catch {
         return [];
@@ -12,19 +12,19 @@ export function loadBooks() {
 }
 
 export function saveBooks(books) {
-    localeStorage.setItem(BOOKS_KEY, JSON.stringify(books));
+    localStorage.setItem(BOOKS_KEY, JSON.stringify(books));
 }
 
 export function loadSettings() {
     try{
-        const saved = JSON.parse(localeStorage.getItem(SETTINGS_KEY));
+        const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY));
             return { ...DEFAULT_SETTINGS, ...saved };
     } catch {
         return {...DEFAULT_SETTINGS };
     }
 }
 
-export function saveSettings {
+export function saveSettings(settings) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 

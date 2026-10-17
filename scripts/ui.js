@@ -25,20 +25,20 @@ function formatNumber(n) {
 export function renderDashboard(books, settings) {
     const stats = getStats(books);
     document.getElementById('stat-pages').textContent = formatNumber(stats.totalPages);
-    document.getElementById('stat-books').textContent = stats.total + (stats === 1 ? 'book' : 'books');
-    document.getElementById('stat-authors').textContent = stats.authors + (stats.authors === 1 ? 'author' : ' authors');
+    document.getElementById('stat-books').textContent = stats.total + (stats.total === 1 ? ' book' : ' books');
+    document.getElementById('stat-authors').textContent = stats.authors + (stats.authors === 1 ? ' author' : ' authors');
     document.getElementById('stat-tag').textContent = stats.topTag || 'nothing yet';
-}
+
 
 if (stats.latest) {
-    const date = new date(stats.latest.dateAdded + 'T00:00:00');
-    document.getElementById('widget-month').textContent = date.toLocalDateString('en', { month: 'short' });
+    const date = new Date(stats.latest.dateAdded + 'T00:00:00');
+    document.getElementById('widget-month').textContent = date.toLocaleDateString('en', { month: 'short' });
     document.getElementById('widget-day').textContent = date.getDate();
-    document.getElementById('widget-latest').textContent = statusbar.latest.title.split(' - ')[0];
+    document.getElementById('widget-latest').textContent = stats.latest.title.split(' - ')[0];
     document.getElementById('widget-cd').style.cssText = coverStyle(stats.latest.tag);
 }
 if (stats.topTag) {
-    document.getElementById('widget-tag').textContent = stats.topTag,split(' ')[0];
+    document.getElementById('widget-tag').textContent = stats.topTag.split(' ')[0];
     document.getElementById('widget-stamp').style.cssText = coverStyle(stats.topTag);
 }
 
@@ -53,7 +53,7 @@ function renderGoal(totalPages, goal) {
     const alert = document.getElementById('cap-alert');
 
     if (left >= 0) {
-        polite.innerHTML = 'You have <b>${formatNumber(left)} pages</b> left before your goal. Hve a break, have a <b>chapter</b> ;)';
+        polite.innerHTML = `You have ${formatNumber(left)} pages left before your goal. Have a break, have a chapter ;)`;
         alert.textContent =' ';
     }   else {
         polite.textContent = '';
@@ -65,40 +65,41 @@ function renderGoal(totalPages, goal) {
 }
 
 function renderChart(books) {
-    const days = lastSevenDays(books);
-    const max = Math.max(1, ...days.map(d => d.pages));
-    document.getElementById('week-chart').innerHTML = days.map((day, i) => '
+  const days = lastSevenDays(books);
+  const max = Math.max(1, ...days.map(d => d.pages));
+
+  document.getElementById('week-chart').innerHTML = days.map((day, i) => `
     <div class="bar ${i === 6 ? 'today' : ''}">
-        <span style="height: $(Math.max(6, (day.pages / max) * 80)}px" title="${day.pages} pages"></span>
-        <small>${day.label}</small>
-    </div>').join('');
+      <span style="height: ${Math.max(6, (day.pages / max) * 80)}px" title="${day.pages} pages"></span>
+      <small>${day.label}</small>
+    </div>`).join('');
 }
 
 export function renderConvertedTotal(totalPages, settings) {
     const output = document.getElementById('converted-total');
     if (settings.unit === 'hours') {
-        output.textContent = (totalPages / settings.pagesPerHour).toFixed(1) + 'hours';
+        output.textContent = (totalPages / settings.pagesPerHour).toFixed(1) + ' hours';
     } else {
-        output.textContent = formatNumber(totalPages) + 'pages';
+        output.textContent = formatNumber(totalPages) + ' pages';
     }
 }
 
 function bookRow(book, regex, isConfirming) {
-    return '
+  return `
     <tr data-id="${book.id}">
-        <td class="cover-cell"><div class="cover" style="${coverStyle(book.tag)}"></div></td> 
-        <td class="book-title">${highlight(book.title, regex)}</td> 
-        <td class="book-author">${highlight(book.auhtor, regex)}</td>
-        <td data-label="Pages">${book.pages}</td>
-        <td data-label="Tag">${highlight(book.tag, regex)}</td>
-        <td data-label="Added">${book.dateAdded}</td>
-        <td class="actions">
-            <button class="pill" data-action="edit" aria-label="Edit ${escapeHTML(book.title)}">Edit</button>
-            $(isConfirming
-            ? '<button class="pill confirm" data-action="delete" aria-label="Confirm delete $(escapeHTML(book, title)}">Confirm delete</button>'
-            : '<button class="pill danger" data-action="delete" aria-label="Delete ${escapeHTML(book.title)}">Delete</button>'})
-        </td>
-    </tr>';
+      <td class="cover-cell"><div class="cover" style="${coverStyle(book.tag)}"></div></td>
+      <td class="book-title">${highlight(book.title, regex)}</td>
+      <td class="book-author">${highlight(book.author, regex)}</td>
+      <td data-label="Pages">${book.pages}</td>
+      <td data-label="Tag">${highlight(book.tag, regex)}</td>
+      <td data-label="Added">${book.dateAdded}</td>
+      <td class="actions">
+        <button class="pill" data-action="edit" aria-label="Edit ${escapeHTML(book.title)}">Edit</button>
+        ${isConfirming
+          ? `<button class="pill confirm" data-action="delete" aria-label="Confirm delete ${escapeHTML(book.title)}">Confirm delete</button>`
+          : `<button class="pill danger" data-action="delete" aria-label="Delete ${escapeHTML(book.title)}">Delete</button>`}
+      </td>
+    </tr>`;
 }
 
 function editRow(book) {

@@ -1,5 +1,5 @@
 export const PATTERNS = {
-    noEdgeSpaces: /^S(?:.*\S)?$/,                                  // no space at the start or the end
+    noEdgeSpaces: /^\S(?:.*\S)?$/,                                  // no space at the start or the end
   doubleSpace: / {2,}/,                                          // two spaces or more in a row
   repeatedWord: /\b(\w+)\s+\1\b/i,                               // ADVANCED: back-reference \1
   pages: /^(0|[1-9]\d*)(\.\d{1,2})?$/,                           // 528 or 12.5
@@ -8,7 +8,7 @@ export const PATTERNS = {
 };
 
 export const FIELDS = [ 'title', 'author', 'pages', 'tag', 'dateAdded'];
-
+export function validateField(name, value) {
 if (value === '') {
     return 'This field is required.';
 }
@@ -20,7 +20,7 @@ if (name === 'title' || name === 'author') {
     if (PATTERNS.doubleSpace.test(value)) {
       return 'Use only one space between words.';
     }
-    constrepeated = value.match(PATTERNS.repeatedWord);
+    const repeated = value.match(PATTERNS.repeatedWord);
     if (repeated) {
         return `"${repeated[1]}" is written twice.`;
     }

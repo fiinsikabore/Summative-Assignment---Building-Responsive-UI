@@ -8,7 +8,7 @@ export function compileRegex(input, ignorCase) {
 }
 
 export function escapeHTML(text) {
-    .replaceAll('&', '&amp;')
+   return String(text).replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
@@ -24,7 +24,7 @@ export function highlight(text, regex) {
     for (const match of text.matchAll(regex)) {
         result += escapeHTML(text.slice(lastIndex, match.index));
         result += '<mark>' + escapeHTML(match[0]) + '</mark>';
-        lastIndex = match.index + match[0].lenght;
+        lastIndex = match.index + match[0].length;
     }
 
     return result + escapeHTML(text.slice(lastIndex));

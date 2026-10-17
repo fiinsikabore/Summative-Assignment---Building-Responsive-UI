@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book & Notes Vault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Intrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <script type="module" src="scripts/main.js"></script>
     </head>
@@ -14,16 +14,16 @@
 
         <header class="app-header">
             <p class="brand">vault.</p>
-            <nav class="tabs"aria-label="Main">
-                <button class="tab" data-view="home"aria-current="page">Home</button>
+            <nav class="tabs" aria-label="Main">
+                <button class="tab" data-view="home" aria-current="page">Home</button>
                 <button class="tab" data-view="library">Library</button>
                 <button class="tab" data-view="add">Add</button>
-                <button class="tab" data-view="Settings">Settings</button>
+                <button class="tab" data-view="settings">Settings</button>
                 <button class="tab" data-view="about">About</button>
             </nav>
         </header>
 
-        <main id="main" tabinex="-1">
+        <main id="main" tabindex="-1">
             
             <!-- HOME / DASHBOARD --> 
             <section class="view" id="view-home" aria-labelledby="home-title">
@@ -57,8 +57,8 @@
 
                     <article class="tile goal">
                         <h2 class="eyebrow">Pages goal</h2>
-                        <form id=" goal-form" class="goal-row">
-                            <label for="goal-input">Goalin pages</label>
+                        <form id="goal-form" class="goal-row">
+                            <label for="goal-input">Goal in pages</label>
                             <input id="goal-input" inputmode="numeric" aria-describedby="goal-error">
                             <button class="glow-button" type="submit">Set goal</button>
                         </form>
@@ -82,12 +82,12 @@
             </section>
 
             <!-- LIBRARY / RECORDS --> 
-            <section clas="view" id="view-library" aria-labelledby="library-title" hidden>
+            <section class="view" id="view-library" aria-labelledby="library-title" hidden>
                 <h1 id="library-title" tabindex="-1">Library</h1>
 
                 <div class="search-bar">
                     <label for="search-input" class="sr-only">Search with a regular expression</label>
-                    <input id="search-input" placeholder="azra"|kingdom" autocomplete="off" spellcheck="false">
+                    <input id="search-input" placeholder="azra|kingdom" autocomplete="off" spellcheck="false">
                     <button id="case-toggle" class="chip" aria-pressed="true" aria-label="Ignore uppercase and lowercase">Aa</button>
                 </div>
 
@@ -113,12 +113,11 @@
                             <th scope="col"><span class="sr-only">Actions</span></th>
                         </tr>
                     </thead>
+                <tbody id="book-rows"></tbody>
                 </table>
             </section>
 
 
-
-            <!-- ADD FORM --> 
              <section class="view" id="view-add" aria-labelledby="add-title" hidden>
                 <div class="sheet-rim">
                     <form class="tile sheet" id="add-form" novalidate>
@@ -216,7 +215,6 @@
     </div>
 </section>
 
- <!-- ABOUT --> 
 <section class="view" id="view-about" aria-labelledby="about-title" hidden>
     <div class="sheet-rim">
         <article class="tile about">
@@ -225,8 +223,8 @@
             <p class="sentence">is keeping track of <b>every book</b> sher reads in one <b>quiet little vault</b>.</p>
             <hr>
             <p>Book &amp; Notes Vault · Frontend Web Development, ALU</p>
-            <p>GitHub: <a href=https://github.com/fiinsikabore">github.com/fiinsikabore</a></p>
-          <p>Email: <a href="mailto:YOUR-EMAIL">YOUR-EMAIL</a></p></p>
+            <p>GitHub: <a href=href="https://github.com/fiinsikabore">github.com/fiinsikabore</a></p>
+          <p>Email: <a href="mailto:YOUR-EMAIL">YOUR-EMAIL</a></p>
         </article>
     </div>
 </section>

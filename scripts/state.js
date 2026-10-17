@@ -19,7 +19,7 @@ export function addBook(data) {
     const book = {
         id: 'book_' + Date.now(),
         ...data,
-        createdAt: now();
+        createdAt: now(),
         updatedAt: now()
     };
 
@@ -28,10 +28,10 @@ export function addBook(data) {
     return book;
 }
 
-export function updatedBook(id, changes) {
-    const book = book.find(b => b.id === id);
+export function updateBook(id, changes) {
+    const book = books.find(b => b.id === id);
     if (!book) return;
-    Object.assign(book, changes, { updateAt: now() });
+    Object.assign(book, changes, { updatedAt: now() });
     saveBooks(books);
 }
 
