@@ -4,7 +4,7 @@ const DEFAULT_SETTINGS = { goal: 6000, pagesPerHour: 40, unit: 'pages' };
 
 export function loadBooks() {
     try{
-        const data = JSON.parse(localStorage.getItem(BOOKS-KEY));
+        const data = JSON.parse(localStorage.getItem(BOOKS_KEY));
         return Array.isArray(data) ? data : [];
     } catch {
         return [];

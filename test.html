@@ -70,7 +70,7 @@
     check('highlight escapes HTML', highlight('<b>', null) === '&lt;b&gt;');
 
    const sample = [ 
-    { title: 'B', authour: 'X', tag: 'Fantasy', pages: 300, dateAdded: '2025-01-02' },
+    { title: 'B', author: 'X', tag: 'Fantasy', pages: 300, dateAdded: '2025-01-02' },
     { title: 'A', author: 'Azra Reed', tag: 'Dark Romance', pages: 100, dateAdded: '2025-01-03' }
    ];
    check('filter finds an author', filterBooks(sample, compileRegex('azra', true)).length === 1);

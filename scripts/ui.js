@@ -1,6 +1,6 @@
 import {escapeHTML, highlight } from './search.js';
 import { getStats, lastSevenDays } from './stats.js';
-import { FIELDS } from './validators,js';
+import { FIELDS } from './validators.js';
 
 const TAG_COLOURS = {
   'Dark Romance': ['#E2457F', '#741E48'],
@@ -23,12 +23,12 @@ function formatNumber(n) {
 }
 
 export function renderDashboard(books, settings) {
-  const states = getStats(books);
+  const stats = getStats(books);
 
-  document.getElementById('stat-pages').textContent = formatNumber(states.totalPages);
-  document.getElementById('stat-books').textContent = states.total + (states.total === 1 ? ' book' : ' books');
-  document.getElementById('stat-authors').textContent = states.authors + (states.authors === 1 ? ' author' : ' authors');
-  document.getElementById('stat-tag').textContent = states.topTag || 'nothing yet';
+  document.getElementById('stat-pages').textContent = formatNumber(stats.totalPages);
+  document.getElementById('stat-books').textContent = stats.total + (stats.total === 1 ? ' book' : ' books');
+  document.getElementById('stat-authors').textContent = stats.authors + (stats.authors === 1 ? ' author' : ' authors');
+  document.getElementById('stat-tag').textContent = stats.topTag || 'nothing yet';
 
   renderLatest(stats.latest);
   renderTopTag(stats.topTag);
@@ -42,7 +42,7 @@ function renderLatest(latest) {
   const date = new Date(latest.dateAdded + 'T00:00:00');
   document.getElementById('widget-month').textContent = date.toLocaleDateString('en', { month: 'short' });
   document.getElementById('widget-day').textContent = date.getDate();
-  document.getElementById('widget-latest').textContent = latest.title,split(' - ')[0];
+  document.getElementById('widget-latest').textContent = latest.title.split(' - ')[0];
   document.getElementById('widget-cd').style.cssText = coverStyle(latest.tag);
 }
 
@@ -96,11 +96,11 @@ function bookRow(book, regex, isConfirming) {
       <td class="book-title">${highlight(book.title, regex)}</td>
       <td class="book-author">${highlight(book.author, regex)}</td>
 
-      <td data-label="Pages">${book.pages}>/td>
+      <td data-label="Pages">${book.pages}</td>
       <td data-label="Tag">${highlight(book.tag, regex)}</td>
-      <td data-label="Added">${book.dateAdded}</td
+      <td data-label="Added">${book.dateAdded}</td>
       <td class="actions">
-        <button class="pill" data-action="edit" aria-label="Edit${escapeHTML(booktitle)}">Edit</button>
+        <button class="pill" data-action="edit" aria-label="Edit ${escapeHTML(book.title)}">Edit</button>
         ${isConfirming
           ? `<button class="pill confirm" data-action="delete" aria-label="Confirm delete ${escapeHTML(book.title)}">Confirm delete</button>`
           : `<button class="pill danger" data-action="delete" aria-label="Delete ${escapeHTML(book.title)}">Delete</button>`}
@@ -108,10 +108,10 @@ function bookRow(book, regex, isConfirming) {
     </tr>`;
 }
 
-function editROw(book) {
+function editRow(book) {
   const cells = FIELDS.map(field => `
     <td>
-      <label class="sr-only" for=edit-${field}">${LABELS[field]} </label>
+      <label class="sr-only" for="edit-${field}">${LABELS[field]} </label>
       <input id="edit-${field}" name="${field}" value="${escapeHTML(book[field])}" aria-describedby="edit-${field}-error">
       <span class="error" id="edit-${field}-error"></span>
     </td>`).join('');
@@ -127,7 +127,7 @@ function editROw(book) {
       </tr>`;
   }
 
-  export function renderLibrary((books, view) {
+  export function renderLibrary(books, view) {
   const tbody = document.getElementById('book-rows');
   const status = document.getElementById('search-status');
 
@@ -147,17 +147,17 @@ function editROw(book) {
   }
 
   tbody.innerHTML = books.map(book => 
-    book.id === view.editingId ? editROw(book) : bookRow,view.regex, book.id === view.confirmId)
+    book.id === view.editingId ? editRow(book) : bookRow(book, view.regex, book.id === view.confirmId)
   ).join('');
 }
 
 export function renderSortButtons(sortKey, sortDir) {
   const names = { dateAdded: 'Date', title: 'Title', pages: 'Pages' };
-  document.querySelectorAll('[data-sprt]').forEach(button => {
+  document.querySelectorAll('[data-sort]').forEach(button => {
     const key = button.dataset.sort;
     const active = key === sortKey;
     button.setAttribute('aria-pressed', active);
-    button.textContent  names[key] + (active ? (sortDir === 'asc' ? ' ↑' : ' ↓') : '');
+    button.textContent = names[key] + (active ? (sortDir === 'asc' ? ' ↑' : ' ↓') : '');
   });
 }
 
